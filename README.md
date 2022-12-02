@@ -15,9 +15,6 @@ I will use the data from the following website: https://portal.gdc.cancer.gov/re
 ## Milestone 1
 I have downloaded the data and matched the file names to the corresponding TCGA IDs. I have isolated the necessary unstranded column from each file and merged them together for the analysis. I have created another spreadsheet identifying the TCGA IDs for each of the two treatment groups.
 
-## Known Issues
-The original dataset included over 500 samples. I narrowed it down to 300 and then further narrowed it down to 40 samples for the analysis. Since there were no filters avaliable, I chose 20 samples for each group at random to speed up the process of the analysis. 
-
 ## Milestone 2
 I will do an initial run of the entire vignette listed above for analysis. This will include having data loaded in (completed during milestone 1) and run through the entire vignette. I will be seeking feedback during this step. I will begin the process of uploading documentation and defining my results.
 
@@ -47,6 +44,11 @@ Merge the files together using the ```paste``` command:
 Create a txt file using Microsoft Excel with the Sample IDs and their condition. The Sample IDs should be in the same order as the merged_file.txt otherwise DESeq2 will not accept the file. 
 
 ## DESeq2 Vignette
+
+## Known Issues
+The original dataset included over 500 samples. I narrowed it down to 300 and then further narrowed it down to 40 samples for the analysis. Since there were no filters avaliable, I chose 20 samples for each group at random to speed up the process of the analysis. 
+
+## Conclusions 
 
 
 
