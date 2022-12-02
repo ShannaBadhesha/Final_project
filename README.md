@@ -46,7 +46,7 @@ Merge the files together using the ```paste``` command:
 
 Create a txt file using Microsoft Excel with the Sample IDs and their condition. The Sample IDs should be in the same order as the merged_file.txt otherwise DESeq2 will not accept the file. 
 
-
+## DESeq2 Vignette
 
 
 
