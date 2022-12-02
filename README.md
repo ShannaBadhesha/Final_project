@@ -28,15 +28,19 @@ Below is the completed vignette with my 40 samples.
 
 The STAR-Count files provide a lot of information that I will not be needing for the analysis. For the purpose of this vignette, we will extract the unstranded gene count column from each file and merge them together.
 
-Create a ```gene.id``` file that includes all the gene id's from one of the sample files: ```awk '{print $1}’ TCGA-04-1331.tsv > TCGA-04-1331.txt```
+Create a ```gene.id``` file that includes all the gene id's from one of the sample files: 
+```awk '{print $1}’ TCGA-04-1331.tsv > TCGA-04-1331.txt```
 
-Extract the unstranded column (column 4) from each tsv file: ```awk '{print $4}’ TCGA-04-1331.tsv > TCGA-04-1331.txt```
+Extract the unstranded column (column 4) from each tsv file:
+```awk '{print $4}’ TCGA-04-1331.tsv > TCGA-04-1331.txt```
 
-Remove the first 6 lines from each tsv file since they will not be needed for our analysis: ```sed -i .bak '1,6d' 'TCGA-04-1332.txt'```
+Remove the first 6 lines from each tsv file since they will not be needed for our analysis:
+```sed -i .bak '1,6d' 'TCGA-04-1332.txt'```
 
 Add a header to each of the file using ```vi```. The header should be the sample ID. 
 
-Merge the files together using the ```paste``` command: ```paste gene.id *.txt > merged_files.txt```
+Merge the files together using the ```paste``` command: 
+```paste gene.id *.txt > merged_files.txt```
 
 ### Sample Information Table 
 
