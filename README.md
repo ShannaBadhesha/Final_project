@@ -24,7 +24,7 @@ I will do an initial run of the entire vignette listed above for analysis. This 
 ## Deliverable
 Below is the completed vignette with my 40 samples. 
 
-### Organzing Sample Files
+## Organzing Sample Files
 
 The STAR-Count files provide a lot of information that I will not be needing for the analysis. For the purpose of this vignette, we will extract the unstranded gene count column from each file and merge them together.
 
