@@ -313,6 +313,7 @@ In DESeq2, the function plotMA shows the log2 fold changes attributable to a giv
 plotMA(res, ylim=c(-2,2))
 ```
 ![png](Graphs/graph_1.png)
+MA plot displaying the log fold-change compared with mean of normalizaed counts using DESeq2, with default log fold-change thresholds of −2 and 2. 
 
 ```r
 plotMA(resLFC, ylim=c(-2,2))
@@ -899,7 +900,7 @@ abline(h=qf(.99, p, m - p))
 ![png](Graphs/graph_20.png)
 
 ### Independent filtering and multiple testing
-###Filtering criteria
+### Filtering criteria
 A good choice for a filtering criterion is one that
 
 1. is statistically independent from the test statistic under the null hypothesis,
