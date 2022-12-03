@@ -312,7 +312,7 @@ In DESeq2, the function plotMA shows the log2 fold changes attributable to a giv
 ```r
 plotMA(res, ylim=c(-2,2))
 ```
-![png](graph_1.png)
+![png](Graphs/graph_1.png)
 
 ```r
 plotMA(resLFC, ylim=c(-2,2))
