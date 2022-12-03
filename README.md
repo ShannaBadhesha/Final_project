@@ -147,7 +147,7 @@ dds <- DESeqDataSetFromMatrix(countData = cts,
                               colData = coldata,
                               design = ~ condition)
 
-`dds
+dds
 ```
     ##class: DESeqDataSet 
     ##dim: 60660 40 
