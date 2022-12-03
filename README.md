@@ -317,7 +317,7 @@ plotMA(res, ylim=c(-2,2))
 ```r
 plotMA(resLFC, ylim=c(-2,2))
 ```
-![png](graph_2.png)
+![png](Graphs/graph_2.png)
 
 ### Alternative shrinkage estimators
 
@@ -355,7 +355,7 @@ plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm")
 plotMA(resNorm, xlim=xlim, ylim=ylim, main="normal")
 plotMA(resAsh, xlim=xlim, ylim=ylim, main="ashr")
 ```
-![png](graph_3.png)
+![png](Graphs/graph_3.png)
 
 ### Plot Counts
 It can also be useful to examine the counts of reads for a single gene across the groups. A simple function for making this plot is plotCounts, which normalizes counts by the estimated size factors (or normalization factors if these were used) and adds a pseudocount of 1/2 to allow for log scale plotting. The counts are grouped by the variables in intgroup, where more than one variable can be specified. Here we specify the gene which had the smallest p value from the results table created above. You can select the gene to plot by rowname or by numeric index.
@@ -363,7 +363,7 @@ It can also be useful to examine the counts of reads for a single gene across th
 ```r
 plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
 ```
-![png](graph_4.png)
+![png](Graphs/graph_4.png)
 
 ```r
 d <- plotCounts(dds, gene=which.min(res$padj), intgroup="condition", 
@@ -373,7 +373,7 @@ ggplot(d, aes(x=condition, y=count)) +
   geom_point(position=position_jitter(w=0.1,h=0)) + 
   scale_y_log10(breaks=c(25,100,400))
 ```
-![png](graph_5.png)
+![png](Graphs/graph_5.png)
 
 ### Exporting results to CSV files 
 A plain-text file of the results can be exported using the base R functions write.csv or write.delim. We suggest using a descriptive file name indicating the variable and levels which were tested.
@@ -450,17 +450,17 @@ ntd <- normTransform(dds)
 library("vsn")
 meanSdPlot(assay(ntd))
 ```
-![png](graph_6.png)
+![png](Graphs/graph_6.png)
 
 ```r
 meanSdPlot(assay(vsd))
 ```
-![png](graph_8.png)
+![png](Graphs/graph_8.png)
 
 ```r
 meanSdPlot(assay(rld))
 ```
-![png](graph_9.png)
+![png](Graphs/graph_9.png)
 
 ### Data quality assessment by sample clustering and visualization
 Data quality assessment and quality control (i.e. the removal of insufficiently good data) are essential steps of any data analysis. These steps should typically be performed very early in the analysis of a new data set, preceding or in parallel to the differential expression testing.
@@ -476,17 +476,17 @@ df <- as.data.frame(colData(dds)[,c("condition","type")])
 pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
-![png](graph_10.png)
+![png](Graphs/graph_10.png)
 ```r
 pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
-![png](graph_11.png)
+![png](Graphs/graph_11.png)
 ```r
 pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
-![png](graph_12.png)
+![png](Graphs/graph_12.png)
 
 ### Heatmap of the sample-to-sample distances
 Another use of the transformed data is sample clustering. Here, we apply the dist function to the transpose of the transformed count matrix to get sample-to-sample distances.
@@ -508,7 +508,7 @@ pheatmap(sampleDistMatrix,
          clustering_distance_cols=sampleDists,
          col=colors)
 ```
-![png](graph_13.png)
+![png](Graphs/graph_13.png)
 
 ### Principal component plot of the samples
 Related to the distance matrix is the PCA plot, which shows the samples in the 2D plane spanned by their first two principal components. This type of plot is useful for visualizing the overall effect of experimental covariates and batch effects.
@@ -516,7 +516,7 @@ Related to the distance matrix is the PCA plot, which shows the samples in the 2
 ```r
 plotPCA(vsd, intgroup=c("condition", "type"))
 ```
-![png](graph_14.png)
+![png](Graphs/graph_14.png)
 
 
 ### Likelihood ratio test
@@ -554,7 +554,7 @@ resApeT <- lfcShrink(dds, coef=2, type="apeglm", lfcThreshold=1)
 plotMA(resApeT, ylim=c(-3,3), cex=.8)
 abline(h=c(-1,1), col="dodgerblue", lwd=2)
 ```
-![png](graph_15.png)
+![png](Graphs/graph_15.png)
 
 ### Dispersion plot and fitting alternatives
 Plotting the dispersion estimates is a useful diagnostic. The dispersion plot below is typical, with the final estimates shrunk from the gene-wise estimates towards the fitted estimates. Some gene-wise estimates are flagged as outliers and not shrunk towards the fitted value, (this outlier detection is described in the manual page for estimateDispersionsMAP). The amount of shrinkage can be more or less than seen here, depending on the sample size, the number of coefficients, the row mean and the variability of the gene-wise estimates.
@@ -562,7 +562,7 @@ Plotting the dispersion estimates is a useful diagnostic. The dispersion plot be
 ```r
 plotDispEsts(dds)
 ```
-![png](graph_16.png)
+![png](Graphs/graph_16.png)
 
 ### Independent filtering of results
 The results function of the DESeq2 package performs independent filtering by default using the mean of normalized counts as a filter statistic. A threshold on the filter statistic is found which optimizes the number of adjusted p values lower than a significance level alpha (we use the standard variable name for significance level, though it is unrelated to the dispersion parameter α). The theory behind independent filtering is discussed in greater detail below. The adjusted p values for the genes which do not pass the filter threshold are set to NA.
@@ -586,7 +586,7 @@ plot(metadata(res)$filterNumRej,
 lines(metadata(res)$lo.fit, col="red")
 abline(v=metadata(res)$filterTheta)
 ```
-![png](graph_17.png)
+![png](Graphs/graph_17.png)
 
 Independent filtering can be turned off by setting independentFiltering to FALSE.
 ```r
@@ -623,7 +623,7 @@ plotMA(resLA, ylim=ylim); drawLines()
 plotMA(resG, ylim=ylim); drawLines()
 plotMA(resL, ylim=ylim); drawLines()
 ```
-![png](graph_18.png)
+![png](Graphs/graph_18.png)
 
 ### Access to all calculated values
 All row-wise calculated values (intermediate dispersion calculations, coefficients, standard errors, etc.) are stored in the DESeqDataSet object, e.g. dds in this vignette. These values are accessible by calling mcols on dds. Descriptions of the columns are accessible by two calls to mcols. Note that the call to substr below is only for display purposes.
@@ -896,7 +896,7 @@ m <- ncol(dds)
 p <- 3
 abline(h=qf(.99, p, m - p))
 ```
-![png](graph_20.png)
+![png](Graphs/graph_20.png)
 
 ### Independent filtering and multiple testing
 ###Filtering criteria
@@ -913,7 +913,7 @@ plot(res$baseMean+1, -log10(res$pvalue),
      ylim=c(0,30),
      cex=.4, col=rgb(0,0,0,.3))
 ```
-![png](graph_21.png)
+![png](Graphs/graph_21.png)
 
 
 ## Known Issues
