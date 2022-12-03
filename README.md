@@ -921,6 +921,21 @@ The original dataset included over 500 samples. I narrowed it down to 40 samples
 
 ## Conclusions 
 
+## Citation
+  Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq
+  data with DESeq2 Genome Biology 15(12):550 (2014)
 
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    title = {Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2},
+    author = {Michael I. Love and Wolfgang Huber and Simon Anders},
+    year = {2014},
+    journal = {Genome Biology},
+    doi = {10.1186/s13059-014-0550-8},
+    volume = {15},
+    issue = {12},
+    pages = {550},
+  }
 
 
