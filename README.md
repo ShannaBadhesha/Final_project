@@ -23,7 +23,7 @@ Below is the completed analysis for my 40 samples.
 
 ## Organzing Sample Files
 
-The STAR-Count files provide a lot of information that I will not be needing for the analysis. For the purpose of this vignette, we will extract the unstranded gene count column from each file and merge them together.
+For the purpose of this vignette, we will extract the unstranded gene count column from each file and merge them together.
 
 Create a ```gene.id``` file that includes all the gene id's from one of the sample files: 
 	```awk '{print $1}’ TCGA-04-1331.tsv > TCGA-04-1331.txt```
