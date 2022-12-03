@@ -956,8 +956,8 @@ Most of the subsets passed the filter (blue).
 The original dataset included over 500 samples. I narrowed it down to 40 samples for the analysis. Since there were no filters avaliable, I chose 20 samples for each group at random to speed up the process of the analysis. 
 
 ## Conclusions 
-
-
+Most of the samples in the radiation and non-radiation treatment groups were similar based on the clustering shown on the PCA plot. The heatmap does show higher expression of genes in radiation treatment samples as expected. For a proper analysis, I would need to run all 585 samples to compare the groups. 
+	  
 ## Citation
   Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq
   data with DESeq2 Genome Biology 15(12):550 (2014)
