@@ -949,7 +949,7 @@ text(x = c(0, length(h1$counts)), y = 0, label = paste(c(0,1)),
      adj = c(0.5,1.7), xpd=NA)
 legend("topright", fill=rev(colori), legend=rev(names(colori)))
 ```
-![png](Graphs/histogram.png)
+
 Most of the subsets passed the filter (blue). 
 
 ## Known Issues
