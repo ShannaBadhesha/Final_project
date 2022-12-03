@@ -10,7 +10,7 @@ Shanna Badhesha
 I will identify differentially expressed genes between Ovarian Serous Cystadenocarcinoma radiation treatment vs. non-radiation treatment. This analysis will utilize the package DeSEQ2 and the http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html vignette. For this analysis, I will be using the TCGA-OV cohort. I have identified a total of 40 STAR-counts files with 20 radiation treatment and 20 non-radiation treatment files. 
 
 ## Data
-I will use the data from the following website: https://portal.gdc.cancer.gov/repository. There are 585 STAR-count files with 450 radiation treatment and 135 non-radiation treatment files in total. I will be using 40 STAR-counts files with 20 samples per group. The specific files are available [here](https://portal.gdc.cancer.gov/repository?facetTab=files&filters=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.primary_site%22%2C%22value%22%3A%5B%22ovary%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.program.name%22%2C%22value%22%3A%5B%22TCGA%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.analysis.workflow_type%22%2C%22value%22%3A%5B%22STAR%20-%20Counts%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.experimental_strategy%22%2C%22value%22%3A%5B%22RNA-Seq%22%5D%7D%7D%5D%7D).
+I will use the data from the following website: https://portal.gdc.cancer.gov/repository. There are 585 STAR-count files with 450 radiation treatment and 135 non-radiation treatment files in total. I will be using 40 STAR-counts files with 20 samples per group. Corrected for race. The specific files are available [here](https://portal.gdc.cancer.gov/repository?facetTab=files&filters=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.primary_site%22%2C%22value%22%3A%5B%22ovary%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.program.name%22%2C%22value%22%3A%5B%22TCGA%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.analysis.workflow_type%22%2C%22value%22%3A%5B%22STAR%20-%20Counts%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.experimental_strategy%22%2C%22value%22%3A%5B%22RNA-Seq%22%5D%7D%7D%5D%7D).
 
 ## Milestone 1
 I have downloaded the data and matched the file names to the corresponding TCGA IDs. I have isolated the necessary unstranded column from each file and merged them together for the analysis. I have created another spreadsheet identifying the TCGA IDs for each of the two treatment groups.
@@ -313,12 +313,13 @@ In DESeq2, the function plotMA shows the log2 fold changes attributable to a giv
 plotMA(res, ylim=c(-2,2))
 ```
 ![png](Graphs/graph_1.png)
-MA plot displaying the log fold-change compared with mean of normalizaed counts using DESeq2, with default log fold-change thresholds of −2 and 2. 
+MA plot displaying the log fold-change compared with mean of normalizaed counts using DESeq2, with default log fold-change thresholds of −2 and 2. Since there are more genes falling above the one threshold on the y-axis, there are more genes being upregulated. 
 
 ```r
 plotMA(resLFC, ylim=c(-2,2))
 ```
 ![png](Graphs/graph_2.png)
+MA Plot with shrunken log2 fold changes, which remove the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds. There are still more genes falling above the one threshold on the y-axis indicated that more genes are being upregulated. 
 
 ### Alternative shrinkage estimators
 
@@ -357,6 +358,7 @@ plotMA(resNorm, xlim=xlim, ylim=ylim, main="normal")
 plotMA(resAsh, xlim=xlim, ylim=ylim, main="ashr")
 ```
 ![png](Graphs/graph_3.png)
+Three MA plots using the following shrinkage methods: apeglm, normal and ashr. This is useful for ranking and visualization, without the need for arbitrary filters on low count genes.
 
 ### Plot Counts
 It can also be useful to examine the counts of reads for a single gene across the groups. A simple function for making this plot is plotCounts, which normalizes counts by the estimated size factors (or normalization factors if these were used) and adds a pseudocount of 1/2 to allow for log scale plotting. The counts are grouped by the variables in intgroup, where more than one variable can be specified. Here we specify the gene which had the smallest p value from the results table created above. You can select the gene to plot by rowname or by numeric index.
@@ -365,6 +367,7 @@ It can also be useful to examine the counts of reads for a single gene across th
 plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
 ```
 ![png](Graphs/graph_4.png)
+Plot count of the ENSG00000227063.5 gene comparing radiation vs non-radiation treatment. Normalized count is observed to be higher in the non-radiation treatment group. 
 
 ```r
 d <- plotCounts(dds, gene=which.min(res$padj), intgroup="condition", 
@@ -375,6 +378,7 @@ ggplot(d, aes(x=condition, y=count)) +
   scale_y_log10(breaks=c(25,100,400))
 ```
 ![png](Graphs/graph_5.png)
+Plot count of the ENSG00000227063.5 gene using ```ggplot``` comparing radiation vs non-radiation treatment. Normalized count is observed to be higher in the non-radiation treatment group. 
 
 ### Exporting results to CSV files 
 A plain-text file of the results can be exported using the base R functions write.csv or write.delim. We suggest using a descriptive file name indicating the variable and levels which were tested.
@@ -452,16 +456,19 @@ library("vsn")
 meanSdPlot(assay(ntd))
 ```
 ![png](Graphs/graph_6.png)
+Plotting standard deviation against the sqaure root of the variance over all samples. Highest between 15000-25000. Somewhat of a normal distribution leaning towards the right. 
 
 ```r
 meanSdPlot(assay(vsd))
 ```
 ![png](Graphs/graph_8.png)
+Plotting standard deviation against the sqaure root of the variance over all samples. Highest around 30000.
 
 ```r
 meanSdPlot(assay(rld))
 ```
 ![png](Graphs/graph_9.png)
+Plotting standard deviation against the sqaure root of the variance over all samples. Few outliers with a overall flat curve.
 
 ### Data quality assessment by sample clustering and visualization
 Data quality assessment and quality control (i.e. the removal of insufficiently good data) are essential steps of any data analysis. These steps should typically be performed very early in the analysis of a new data set, preceding or in parallel to the differential expression testing.
@@ -478,16 +485,21 @@ pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
 ![png](Graphs/graph_10.png)
+Expression is the highest in the radiation treatment samples. 
+
 ```r
 pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
 ![png](Graphs/graph_11.png)
+Expression is the highest in the radiation treatment samples.
+
 ```r
 pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 ```
 ![png](Graphs/graph_12.png)
+Expression is the highest in the radiation treatment samples. 
 
 ### Heatmap of the sample-to-sample distances
 Another use of the transformed data is sample clustering. Here, we apply the dist function to the transpose of the transformed count matrix to get sample-to-sample distances.
@@ -510,6 +522,7 @@ pheatmap(sampleDistMatrix,
          col=colors)
 ```
 ![png](Graphs/graph_13.png)
+Heatmap of the distance matrix grouping together some of the radiation and non-radiation treatments. 
 
 ### Principal component plot of the samples
 Related to the distance matrix is the PCA plot, which shows the samples in the 2D plane spanned by their first two principal components. This type of plot is useful for visualizing the overall effect of experimental covariates and batch effects.
@@ -518,7 +531,7 @@ Related to the distance matrix is the PCA plot, which shows the samples in the 2
 plotPCA(vsd, intgroup=c("condition", "type"))
 ```
 ![png](Graphs/graph_14.png)
-
+Some grouping of the radiation and non-radiation treament in upper second quadrant. Some grouping of the non-radiation treatments in the bottom left. PC1 has 20% variance and PC2 only has 11%. 
 
 ### Likelihood ratio test
 DESeq2 offers two kinds of hypothesis tests: the Wald test, where we use the estimated standard error of a log2 fold change to test if it is equal to zero, and the likelihood ratio test (LRT). The LRT examines two models for the counts, a full model with a certain number of terms and a reduced model, in which some of the terms of the full model are removed. The test determines if the increased likelihood of the data using the extra terms in the full model is more than expected if those extra terms are truly zero.
@@ -556,6 +569,7 @@ plotMA(resApeT, ylim=c(-3,3), cex=.8)
 abline(h=c(-1,1), col="dodgerblue", lwd=2)
 ```
 ![png](Graphs/graph_15.png)
+MA plot using the lfcShrink function. More genes above the one threshold indicating that more genes are upregulated vs. the genes falling below the negative one threshold which would indicate downregulation.
 
 ### Dispersion plot and fitting alternatives
 Plotting the dispersion estimates is a useful diagnostic. The dispersion plot below is typical, with the final estimates shrunk from the gene-wise estimates towards the fitted estimates. Some gene-wise estimates are flagged as outliers and not shrunk towards the fitted value, (this outlier detection is described in the manual page for estimateDispersionsMAP). The amount of shrinkage can be more or less than seen here, depending on the sample size, the number of coefficients, the row mean and the variability of the gene-wise estimates.
@@ -564,6 +578,7 @@ Plotting the dispersion estimates is a useful diagnostic. The dispersion plot be
 plotDispEsts(dds)
 ```
 ![png](Graphs/graph_16.png)
+Plot of the dispersion estimates graph is on the right. Fitted line quickly declines and then flattens out.
 
 ### Independent filtering of results
 The results function of the DESeq2 package performs independent filtering by default using the mean of normalized counts as a filter statistic. A threshold on the filter statistic is found which optimizes the number of adjusted p values lower than a significance level alpha (we use the standard variable name for significance level, though it is unrelated to the dispersion parameter α). The theory behind independent filtering is discussed in greater detail below. The adjusted p values for the genes which do not pass the filter threshold are set to NA.
@@ -588,6 +603,7 @@ lines(metadata(res)$lo.fit, col="red")
 abline(v=metadata(res)$filterTheta)
 ```
 ![png](Graphs/graph_17.png)
+The threshold chosen (vertical line) is the lowest quantile of the filter for which the number of rejections is within 1 residual standard deviation to the peak of a curve fit to the number of rejections over the filter quantiles.
 
 Independent filtering can be turned off by setting independentFiltering to FALSE.
 ```r
@@ -625,6 +641,7 @@ plotMA(resG, ylim=ylim); drawLines()
 plotMA(resL, ylim=ylim); drawLines()
 ```
 ![png](Graphs/graph_18.png)
+MA plots using different thresholds. 
 
 ### Access to all calculated values
 All row-wise calculated values (intermediate dispersion calculations, coefficients, standard errors, etc.) are stored in the DESeqDataSet object, e.g. dds in this vignette. These values are accessible by calling mcols on dds. Descriptions of the columns are accessible by two calls to mcols. Note that the call to substr below is only for display purposes.
@@ -898,6 +915,7 @@ p <- 3
 abline(h=qf(.99, p, m - p))
 ```
 ![png](Graphs/graph_20.png)
+A measure of how much the fitted coefficients would change if an individual sample were removed. 
 
 ### Independent filtering and multiple testing
 ### Filtering criteria
@@ -915,12 +933,30 @@ plot(res$baseMean+1, -log10(res$pvalue),
      cex=.4, col=rgb(0,0,0,.3))
 ```
 ![png](Graphs/graph_21.png)
+Graph to the right is of interest here. Plot of the −log10 p values from all genes over the normalized mean counts. Independent filtering. 
+
+Histogram of p values for all tests. The area shaded in blue indicates the subset of those that pass the filtering, the area in khaki those that do not pass:
+
+```r
+use <- res$baseMean > metadata(res)$filterThreshold
+h1 <- hist(res$pvalue[!use], breaks=0:50/50, plot=FALSE)
+h2 <- hist(res$pvalue[use], breaks=0:50/50, plot=FALSE)
+colori <- c(`do not pass`="khaki", `pass`="powderblue")
+
+barplot(height = rbind(h1$counts, h2$counts), beside = FALSE,
+        col = colori, space = 0, main = "", ylab="frequency")
+text(x = c(0, length(h1$counts)), y = 0, label = paste(c(0,1)),
+     adj = c(0.5,1.7), xpd=NA)
+legend("topright", fill=rev(colori), legend=rev(names(colori)))
+```
+![png](Graphs/histogram.png)
 
 
 ## Known Issues
 The original dataset included over 500 samples. I narrowed it down to 40 samples for the analysis. Since there were no filters avaliable, I chose 20 samples for each group at random to speed up the process of the analysis. 
 
 ## Conclusions 
+
 
 ## Citation
   Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq
