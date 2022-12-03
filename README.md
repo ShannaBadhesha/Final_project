@@ -917,7 +917,7 @@ plot(res$baseMean+1, -log10(res$pvalue),
 
 
 ## Known Issues
-The original dataset included over 500 samples. I narrowed it down to 300 and then further narrowed it down to 40 samples for the analysis. Since there were no filters avaliable, I chose 20 samples for each group at random to speed up the process of the analysis. 
+The original dataset included over 500 samples. I narrowed it down to 40 samples for the analysis. Since there were no filters avaliable, I chose 20 samples for each group at random to speed up the process of the analysis. 
 
 ## Conclusions 
 
