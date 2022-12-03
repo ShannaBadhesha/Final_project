@@ -1,7 +1,7 @@
 # Final Project Outline
 
 ## Title
-Differential Gene Expression in TCGA within stage 1-4 Ovarian Serous Cystadenocarcinoma comparing radiation treatment using carboplatin vs. non-radiation treatment without carboplatin using DeSEQ2
+Differential Gene Expression in TCGA within stage 1-4 Ovarian Serous Cystadenocarcinoma comparing radiation treatment vs. non-radiation treatment using DeSEQ2
 
 ## Author
 Shanna Badhesha
