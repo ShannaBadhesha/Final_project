@@ -96,47 +96,47 @@ head(cts,2)
 coldata
 ```
 
-    ##             condition
-    ##TCGA.04.1331       rad
-    ##TCGA.04.1332       rad
-    ##TCGA.04.1338       rad
-    ##TCGA.04.1341   non-rad
-    ##TCGA.04.1343       rad
-    ##TCGA.04.1347       rad
-    ##TCGA.04.1350       rad
-    ##TCGA.04.1356       rad
-    ##TCGA.04.1357   non-rad
-    ##TCGA.04.1361       rad
-    ##TCGA.04.1362       rad
-    ##TCGA.04.1364       rad
-    ##TCGA.04.1365       rad
-    ##TCGA.04.1514       rad
-    ##TCGA.04.1519   non-rad
-    ##TCGA.04.1530       rad
-    ##TCGA.04.1536       rad
-    ##TCGA.04.1542       rad
-    ##TCGA.04.1648       rad
-    ##TCGA.04.1651       rad
-    ##TCGA.04.1655       rad
-    ##TCGA.09.0364       rad
-    ##TCGA.09.0366       rad
-    ##TCGA.09.1659   non-rad
-    ##TCGA.09.2048   non-rad
-    ##TCGA.09.2056   non-rad
-    ##TCGA.10.0928   non-rad
-    ##TCGA.13.0730   non-rad
-    ##TCGA.13.0762   non-rad
-    ##TCGA.13.0765   non-rad
-    ##TCGA.13.0766   non-rad
-    ##TCGA.13.0800   non-rad
-    ##TCGA.13.0916   non-rad
-    ##TCGA.13.0920   non-rad
-    ##TCGA.13.0923   non-rad
-    ##TCGA.13.1403   non-rad
-    ##TCGA.13.1505   non-rad
-    ##TCGA.13.1507   non-rad
-    ##TCGA.13.2060   non-rad
-    ##TCGA.23.1029   non-rad 
+    ##             condition                      race
+    ##TCGA.04.1331       rad                     white
+    ##TCGA.04.1332       rad                     white
+    ##TCGA.04.1338       rad                     white
+    ##TCGA.04.1341   non-rad                     white
+    ##TCGA.04.1343       rad                     white
+    ##TCGA.04.1347       rad                     white
+    ##TCGA.04.1350       rad                     asian
+    ##TCGA.04.1356       rad                     white
+    ##TCGA.04.1357   non-rad                     white
+    ##TCGA.04.1361       rad                     white
+    ##TCGA.04.1362       rad                     white
+    ##TCGA.04.1364       rad                     white
+    ##TCGA.04.1365       rad                     white
+    ##TCGA.04.1514       rad                     white
+    ##TCGA.04.1519   non-rad                     white
+    ##TCGA.04.1530       rad                     white
+    ##TCGA.04.1536       rad                     white
+    ##TCGA.04.1542       rad black or african american
+    ##TCGA.04.1648       rad                     white
+    ##TCGA.04.1651       rad                     white
+    ##TCGA.04.1655       rad                     white
+    ##TCGA.09.0364       rad                     white
+    ##TCGA.09.0366       rad                     white
+    ##TCGA.09.1659   non-rad                     white
+    ##TCGA.09.2048   non-rad                     white
+    ##TCGA.09.2056   non-rad                     white
+    ##TCGA.10.0928   non-rad                     white
+    ##TCGA.13.0730   non-rad                     white
+    ##TCGA.13.0762   non-rad                     white
+    ##TCGA.13.0765   non-rad                     white
+    ##TCGA.13.0766   non-rad                     white
+    ##TCGA.13.0800   non-rad                     asian
+    ##TCGA.13.0916   non-rad                     white
+    ##TCGA.13.0920   non-rad           native american
+    ##TCGA.13.0923   non-rad                     white
+    ##TCGA.13.1403   non-rad                     white
+    ##TCGA.13.1505   non-rad                     white
+    ##TCGA.13.1507   non-rad                     white
+    ##TCGA.13.2060   non-rad                     white
+    ##TCGA.23.1029   non-rad                     white
 
 
 ### Building the DESeqDataSet
@@ -156,7 +156,7 @@ dds
     ##rownames(60660): ENSG00000000003.15 ENSG00000000005.6 ... ENSG00000288674.1 ENSG00000288675.1
     ##rowData names(0):
     ##colnames(40): TCGA.04.1331 TCGA.04.1332 ... TCGA.13.2060 TCGA.23.1029
-    ##colData names(1): condition
+    ##colData names(2): condition race
 
 ### Pre-Filtering
 While it is not necessary to pre-filter low count genes before running the DESeq2 functions, there are two reasons which make pre-filtering useful: by removing rows in which there are very few reads, we reduce the memory size of the dds data object, and we increase the speed of the transformation and testing functions within DESeq2. It can also improve visualizations, as features with no information for differential expression are not plotted.
@@ -410,6 +410,123 @@ resSig
     ##ENSG00000124256.15   264.829       1.771640  0.550923   3.21576  0.00130098   0.0996790
     ##ENSG00000174574.16  5367.061       0.775638  0.241273   3.21477  0.00130549   0.0996790
     ##ENSG00000240065.8   4360.595       1.389336  0.432209   3.21450  0.00130672   0.0996790
+
+### Multi-factor designs
+Experiments with more than one factor influencing the counts can be analyzed using design formula that include the additional variables. In fact, DESeq2 can analyze any possible experimental design that can be expressed with fixed effects terms (multiple factors, designs with interactions, designs with continuous variables, splines, and so on are all possible).
+
+```r
+colData(dds)
+```
+    ##DataFrame with 40 rows and 2 columns
+    ##             condition     race
+    ##              <factor> <factor>
+    ##TCGA.04.1331   rad        white
+    ##TCGA.04.1332   rad        white
+    ##TCGA.04.1338   rad        white
+    ##TCGA.04.1341   non-rad    white
+    ##TCGA.04.1343   rad        white
+    ##...                ...      ...
+    ##TCGA.13.1403   non-rad    white
+    ##TCGA.13.1505   non-rad    white
+    ##TCGA.13.1507   non-rad    white
+    ##TCGA.13.2060   non-rad    white
+    ##TCGA.23.1029   non-rad    white
+    
+We create a copy of the DESeqDataSet, so that we can rerun the analysis using a multi-factor design.
+
+```r
+ddsMF <- dds
+```
+
+```r
+levels(ddsMF$type)
+```
+    ##[1] "asian"                     "black or african american" "native american"           "white" 
+    
+We can account for the different types of sequencing, and get a clearer picture of the differences attributable to the treatment. As condition is the variable of interest, we put it at the end of the formula. Thus the results function will by default pull the condition results unless contrast or name arguments are specified.
+
+Then we can re-run DESeq:
+
+```r
+design(ddsMF) <- formula(~ race + condition)
+ddsMF <- DESeq(ddsMF)
+```
+
+Again, we access the results using the results function.
+
+```r
+resMF <- results(ddsMF)
+head(resMF)
+```
+    ##log2 fold change (MLE): condition rad vs non.rad 
+    ##Wald test p-value: condition rad vs non.rad 
+    ##DataFrame with 6 rows and 6 columns
+    ##                    baseMean log2FoldChange     lfcSE       stat    pvalue      padj
+    ##                   <numeric>      <numeric> <numeric>  <numeric> <numeric> <numeric>
+    ##ENSG00000000003.15 5253.9122      0.0594718  0.208699  0.2849641 0.7756716  0.932683
+    ##ENSG00000000005.6    25.2649     -0.9619022  0.638682 -1.5060729 0.1320485  0.517819
+    ##ENSG00000000419.13 3237.4165     -0.0124872  0.203743 -0.0612891 0.9511290  0.986672
+    ##ENSG00000000457.14  676.9305     -0.0694428  0.175000 -0.3968159 0.6915032  0.900484
+    ##ENSG00000000460.17  457.1319     -0.3890140  0.226952 -1.7140844 0.0865132  0.445644
+    ##ENSG00000000938.13  254.6784      0.0560743  0.354075  0.1583686 0.8741663  0.964332
+
+Contrast: Asian vs. White
+
+```r
+resMFType <- results(ddsMF,
+                     contrast=c("race", "asian", "white"))
+head(resMFType)
+```
+    ##log2 fold change (MLE): race asian vs white 
+    ##Wald test p-value: race asian vs white 
+    ##DataFrame with 6 rows and 6 columns
+    ##                    baseMean log2FoldChange     lfcSE       stat     pvalue      padj
+    ##                   <numeric>      <numeric> <numeric>  <numeric>  <numeric> <numeric>
+    ##ENSG00000000003.15 5253.9122      0.1747166  0.467299  0.3738858 0.70848928  0.950005
+    ##ENSG00000000005.6    25.2649      0.0543991  1.431072  0.0380128 0.96967744  0.996456
+    ##ENSG00000000419.13 3237.4165     -0.2346456  0.456300 -0.5142349 0.60708776  0.920952
+    ##ENSG00000000457.14  676.9305     -0.0641532  0.392075 -0.1636249 0.87002646  0.982287
+    ##ENSG00000000460.17  457.1319     -0.3245306  0.508957 -0.6376385 0.52370900  0.892610
+    ##ENSG00000000938.13  254.6784     -2.3117683  0.802841 -2.8794833 0.00398327  0.124543
+
+Contrast: Black or African American vs. White
+
+```r
+resMFType <- results(ddsMF,
+                     contrast=c("race", "black or african american", "white"))
+head(resMFType)
+```
+    ##log2 fold change (MLE): race black or african american vs white 
+    ##Wald test p-value: race black or african american vs white 
+    ##DataFrame with 6 rows and 6 columns
+    ##                    baseMean log2FoldChange     lfcSE       stat     pvalue      padj
+    ##                   <numeric>      <numeric> <numeric>  <numeric>  <numeric> <numeric>
+    ##ENSG00000000003.15 5253.9122      0.0479049  0.660598  0.0725174 0.94219013  0.990184
+    ##ENSG00000000005.6    25.2649     -0.1822050  2.055481 -0.0886435 0.92936525  0.987169
+    ##ENSG00000000419.13 3237.4165     -0.2098887  0.645197 -0.3253094 0.74494691  0.940879
+    ##ENSG00000000457.14  676.9305     -0.0203105  0.555815 -0.0365419 0.97085030  0.995141
+    ##ENSG00000000460.17  457.1319     -0.8131349  0.725680 -1.1205138 0.26249489  0.709941
+    ##ENSG00000000938.13  254.6784     -3.5433248  1.180824 -3.0007211 0.00269341  0.165638
+    
+Contrast: Native American vs. White
+
+```r
+resMFType <- results(ddsMF,
+                     contrast=c("race", "native american", "white"))
+head(resMFType)
+```
+
+    ##log2 fold change (MLE): race native american vs white 
+    ##Wald test p-value: race native american vs white 
+    ##DataFrame with 6 rows and 6 columns
+    ##                    baseMean log2FoldChange     lfcSE      stat    pvalue      padj
+    ##                   <numeric>      <numeric> <numeric> <numeric> <numeric> <numeric>
+    ##ENSG00000000003.15 5253.9122       0.191411  0.660547  0.289776  0.771988  0.984463
+    ##ENSG00000000005.6    25.2649      -1.587464  2.070858 -0.766573  0.443335  0.960342
+    ##ENSG00000000419.13 3237.4165      -0.263284  0.645173 -0.408082  0.683214  0.976433
+    ##ENSG00000000457.14  676.9305       0.128299  0.554897  0.231212  0.817150  0.988006
+    ##ENSG00000000460.17  457.1319       0.125300  0.718901  0.174294  0.861634  0.992622
+    ##ENSG00000000938.13  254.6784      -1.225653  1.129183 -1.085434  0.277730  0.960342
 
 ### Data transformations and visualization
 ### Extracting transformed values
